@@ -1,0 +1,34 @@
+{
+    "rdbms": "postgresql",
+    "host": "127.0.0.1",
+    "port": 5432,
+    "dbname": "",
+    "user": "",
+    "passwd": "",
+    "tables": [ "" ],
+    "relationships": {
+        "enabled": true,
+        "items": [
+            {
+                "type": "has many",
+                "original_table_name": "",
+                "original_table_alias": "",
+                "original_key": "",
+                "target_table_name": "",
+                "target_table_alias": "",
+                "target_key": "produt_id",
+                "enable_reverse": true
+            },
+            {
+                "type": "has many",
+                "original_table_name": "",
+                "original_table_alias": "",
+                "original_key": "",
+                "target_table_name": "",
+                "target_table_alias": "",
+                "target_key": "",
+                "enable_reverse": true
+            }
+        ]
+    }
+}

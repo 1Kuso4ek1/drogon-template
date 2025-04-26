@@ -1,0 +1,56 @@
+{
+    "ssl": {
+        "cert": "...",
+        "key": "..."
+    },
+    "listeners": [
+        {
+            "address": "0.0.0.0",
+            "port": 80,
+            "https": false
+        },
+        {
+            "address": "0.0.0.0",
+            "port": 443,
+            "https": true
+        }
+    ],
+    "file_types": [
+        "gif", "png", "jpg", "js", 
+        "css", "html", "webp", "svg"
+    ],
+    "db_clients":[
+        {
+            "name": "default",
+            "rdbms": "postgresql",
+            "host": "127.0.0.1",
+            "port": 5432,
+            "dbname": "",
+            "user": "",
+            "passwd": "",
+            "connection_number": 5
+        }
+    ],
+    "app": {
+        "number_of_threads": 16,
+        "enable_session": true,
+        "session_timeout": 1200,
+        "session_max_age": -1,
+        "document_root": "../static/",
+        "run_as_daemon": false,
+        "handle_sig_term": true,
+        "relaunch_on_error": false,
+        "use_sendfile": true,
+        "use_gzip": true,
+        "use_brotli": false,
+        "static_files_cache_time": 5,
+        "idle_connection_timeout": 60,
+        "gzip_static": true
+    },
+    "custom_config": {
+        "jwt": {
+            "access_secret": "secret",
+            "refresh_secret": "refreshSecret"
+        }
+    }
+}

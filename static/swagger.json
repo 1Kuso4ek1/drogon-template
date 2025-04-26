@@ -1,0 +1,60 @@
+{
+  "swagger": "2.0",
+  "info": {
+      "description": "",
+      "version": "1.0.7",
+      "title": ""
+  },
+  "host": "localhost:8080",
+  "basePath": "/",
+  "tags": [
+      {
+          "name": "",
+          "description": ""
+      }
+  ],
+  "paths": {
+      "/": {
+          "post": {
+              "tags": [""],
+              "summary": "",
+              "description": "",
+              "operationId": "",
+              "produces": ["application/json"],
+              "parameters": [
+                  {
+                      "in": "body",
+                      "name": "body",
+                      "description": "",
+                      "required": true,
+                      "schema": {
+                          "$ref": "#/definitions/"
+                      }
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": ""
+                  }
+              }
+          }
+      }
+  },
+  "securityDefinitions": {
+      "api_key": {
+          "type": "apiKey",
+          "name": "Authorization",
+          "in": "header",
+          "description": "Bearer {token}"
+      }
+  },
+  "definitions": {
+      "": {
+          "type": "object",
+          "properties": {
+              "id": {"type": "integer"},
+              "name": {"type": "string"}
+          }
+      }
+  }
+}
