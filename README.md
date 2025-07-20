@@ -14,7 +14,7 @@ This is a template for a Drogon C++ web application. It includes a basic structu
 
 Before you begin, ensure you have the following installed:
 
-- **C++ Compiler:** A C++17 compatible compiler (e.g., g++).
+- **C++ Compiler:** A C++20 compatible compiler.
 - **CMake:** Version 3.10 or higher.
 - **PostgreSQL:** A running PostgreSQL server.
 - **Drogon:** The Drogon C++ web framework. Shipped as a submodule.

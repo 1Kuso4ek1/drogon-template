@@ -1,11 +1,12 @@
 #pragma once
 #include <drogon/HttpFilter.h>
 
-#include <jwt-cpp/jwt.h>
-
 using namespace drogon;
 
-class JwtFilter : public HttpFilter<JwtFilter>
+namespace Filters
+{
+
+class JwtFilter final : public HttpFilter<JwtFilter>
 {
 public:
     void doFilter(
@@ -15,3 +16,5 @@ public:
     ) override;
 
 };
+
+}

@@ -5,13 +5,16 @@ using namespace drogon;
 
 using Callback = std::function<void(const HttpResponsePtr&)>;
 
-class StaticController : public HttpController<StaticController>
+namespace Controllers
+{
+
+class StaticController final : public HttpController<StaticController>
 {
 public:
-    void swaggerPage(const HttpRequestPtr& req, Callback&& callback);
-    void swaggerFile(const HttpRequestPtr& req, Callback&& callback);
+    static void swaggerPage(const HttpRequestPtr& req, Callback&& callback);
+    static void swaggerFile(const HttpRequestPtr& req, Callback&& callback);
 
-    void image(const HttpRequestPtr& req, Callback&& callback, const std::string& path);
+    static void image(const HttpRequestPtr& req, Callback&& callback, const std::string& path);
 
 public:
     METHOD_LIST_BEGIN
@@ -24,3 +27,5 @@ public:
     METHOD_LIST_END
 
 };
+
+}

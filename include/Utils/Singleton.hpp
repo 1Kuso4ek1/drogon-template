@@ -1,5 +1,8 @@
 #pragma once
 
+namespace Utils
+{
+
 template<class T>
 class Singleton
 {
@@ -17,3 +20,5 @@ protected:
     Singleton() = default;
     virtual ~Singleton() = default;
 };
+
+}

@@ -10,22 +10,43 @@ set(JWT_BUILD_EXAMPLES OFF)
 
 set(OUTPUT_DIR ${CMAKE_BINARY_DIR})
 
-file(GLOB BACKEND_SOURCES "src/*.cpp" "src/*/*.cpp")
+set(
+    BACKEND_HEADERS
+
+    include/Controllers/LoginController.hpp
+    include/Controllers/StaticController.hpp
+
+    include/Filters/JwtFilter.hpp
+
+    include/Utils/Singleton.hpp
+)
+
+set(
+    BACKEND_SOURCES
+
+    src/Controllers/LoginController.cpp
+    src/Controllers/StaticController.cpp
+
+    src/Filters/JwtFilter.cpp
+
+    src/main.cpp
+)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+add_subdirectory(libraries/drogon)
+add_subdirectory(libraries/jwt-cpp)
+
 add_executable(
     backend
 
+    ${BACKEND_HEADERS}
     ${BACKEND_SOURCES}
 )
 
-target_link_libraries(backend drogon jwt-cpp)
 
-include_directories(${CMAKE_SOURCE_DIR}/include/)
+target_link_libraries(backend drogon jwt-cpp)
 
 target_include_directories(backend PUBLIC ${CMAKE_SOURCE_DIR}/include/)
 
-add_subdirectory(libraries/drogon)
-add_subdirectory(libraries/jwt-cpp)

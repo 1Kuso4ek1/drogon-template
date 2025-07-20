@@ -1,11 +1,8 @@
 #include <drogon/drogon.h>
 
 using namespace drogon;
-using namespace trantor;
 
-using namespace std::chrono_literals;
-
-int main(int argc, char* argv[])
+int main(const int argc, char* argv[])
 {
     auto configPath = "../config/config-template.json";
 
@@ -15,7 +12,7 @@ int main(int argc, char* argv[])
     app()
         .loadConfigFile(configPath)
         .registerPostHandlingAdvice( // Needed only for swagger, remove it in production
-            [](const drogon::HttpRequestPtr &req, const drogon::HttpResponsePtr &resp) {
+            [](const HttpRequestPtr &req, const HttpResponsePtr &resp) {
                 resp->addHeader("Access-Control-Allow-Origin", "*");
             }
         )
