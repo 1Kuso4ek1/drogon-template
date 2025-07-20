@@ -12,7 +12,7 @@ int main(const int argc, char* argv[])
     app()
         .loadConfigFile(configPath)
         .registerPostHandlingAdvice( // Needed only for swagger, remove it in production
-            [](const HttpRequestPtr &req, const HttpResponsePtr &resp) {
+            [](const HttpRequestPtr& req, const HttpResponsePtr& resp) {
                 resp->addHeader("Access-Control-Allow-Origin", "*");
             }
         )
