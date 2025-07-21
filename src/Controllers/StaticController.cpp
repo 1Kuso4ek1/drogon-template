@@ -5,23 +5,12 @@ namespace Controllers
 
 void StaticController::swaggerPage(const HttpRequestPtr& req, Callback&& callback)
 {
-    const auto resp = HttpResponse::newRedirectionResponse("swagger/index.html");
-
-    callback(resp);
+    callback(HttpResponse::newRedirectionResponse("swagger/index.html"));
 }
 
 void StaticController::swaggerFile(const HttpRequestPtr& req, Callback&& callback)
 {
-    const auto resp = HttpResponse::newFileResponse("../static/swagger.json");
-
-    callback(resp);
-}
-
-void StaticController::image(const HttpRequestPtr& req, Callback&& callback, const std::string& path)
-{
-    const auto resp = HttpResponse::newFileResponse("../static/img/" + path);
-
-    callback(resp);
+    callback(HttpResponse::newFileResponse("../static/swagger.json"));
 }
 
 }
