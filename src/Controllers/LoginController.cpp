@@ -40,8 +40,10 @@ void LoginController::login(const HttpRequestPtr& req, Callback&& callback)
         const auto accessToken = Utils::makeAccessToken(userId, username);
         const auto refreshToken = Utils::makeRefreshToken(userId, username);
 
+        req->getSession()->insert("jwtAccess", access);
+
         Json::Value json;
-        json["token"] = accessToken;
+        json["token"] = accessToken; // Optional, since we're storing access in session
 
         const auto response = HttpResponse::newHttpJsonResponse(json);
 
@@ -64,6 +66,9 @@ void LoginController::logout(const HttpRequestPtr& req, Callback&& callback)
 
     // Removing cookie
     Utils::saveRefreshToCookie("", response, 0);
+
+    // Clearing session
+    req->getSession()->erase("jwtAccess");
 
     callback(response);
 }
