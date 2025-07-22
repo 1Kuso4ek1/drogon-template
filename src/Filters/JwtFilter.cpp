@@ -1,8 +1,6 @@
-#include <Filters/JwtFilter.hpp>
+#include "Filters/JwtFilter.hpp"
 
-#include <drogon/HttpAppFramework.h>
-
-#include <jwt-cpp/jwt.h>
+#include "Utils/JwtUtils.hpp"
 
 namespace Filters
 {
@@ -13,25 +11,33 @@ void JwtFilter::doFilter(
     FilterChainCallback&& fccb
 )
 {
-    static auto refreshSecret = app().getCustomConfig()["jwt"]["access_secret"].asString();
+    static auto accessSecret = app().getCustomConfig()["jwt"]["access_secret"].asString();
 
     const auto authHeader = req->getHeader("Authorization");
-    
-    if(authHeader.empty())
-    {
-        const auto response = HttpResponse::newHttpResponse();
-        response->setStatusCode(k401Unauthorized);
+    const auto sessionJwt = req->getSession()->get<std::string>("jwtAccess");
 
-        return fcb(response);
+    auto token = authHeader.empty() ? sessionJwt : authHeader.substr(7);
+
+    if(authHeader.empty() && sessionJwt.empty())
+    {
+        if(tryRefresh(req))
+            token = req->getSession()->get<std::string>("jwtAccess");
+        else
+        {
+            const auto response = HttpResponse::newHttpResponse();
+            response->setStatusCode(k401Unauthorized);
+
+            fcb(response);
+
+            return;
+        }
     }
 
     try
     {
-        // Pure token with "Bearer " removed
-        const auto token = authHeader.substr(7);
         const auto decoded = jwt::decode(token);
         const auto verifier = jwt::verify()
-            .allow_algorithm(jwt::algorithm::hs256("secret"))
+            .allow_algorithm(jwt::algorithm::hs256(accessSecret))
             .with_issuer("auth0");
 
         verifier.verify(decoded);
@@ -45,8 +51,42 @@ void JwtFilter::doFilter(
     {
         const auto response = HttpResponse::newHttpResponse();
         response->setStatusCode(k401Unauthorized);
-        
+
         fcb(response);
+    }
+}
+
+bool JwtFilter::tryRefresh(const HttpRequestPtr& req)
+{
+    static auto refreshSecret = app().getCustomConfig()["jwt"]["refresh_secret"].asString();
+
+    const auto refreshToken = req->getCookie("refreshToken");
+
+    if(refreshToken.empty())
+        return false;
+
+    try
+    {
+        const auto decoded = jwt::decode(refreshToken);
+        const auto verifier = jwt::verify()
+                .allow_algorithm(jwt::algorithm::hs256(refreshSecret))
+                .with_issuer("auth0");
+
+        verifier.verify(decoded);
+
+        const auto userId = decoded.get_payload_claim("user_id").as_string();
+        const auto username = decoded.get_payload_claim("username").as_string();
+
+        req->getSession()->insert(
+            "jwtAccess",
+            Utils::makeAccessToken(std::stoi(userId), username)
+        );
+
+        return true;
+    }
+    catch(...)
+    {
+        return false;
     }
 }
 
