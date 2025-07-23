@@ -18,6 +18,7 @@ set(
 
     include/Filters/JwtFilter.hpp
 
+    include/Utils/JwtUtils.hpp
     include/Utils/Singleton.hpp
 )
 
